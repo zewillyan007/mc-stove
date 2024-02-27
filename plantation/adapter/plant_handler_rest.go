@@ -12,22 +12,22 @@ import (
 	"strconv"
 )
 
-type StoveHandlerRest struct {
+type PlantHandlerRest struct {
 	adapter_shared.Handler
 	resource *resource.ServerResource
 }
 
-func NewStoveHandlerRest(resource *resource.ServerResource) *StoveHandlerRest {
-	return &StoveHandlerRest{
+func NewPlantHandlerRest(resource *resource.ServerResource) *PlantHandlerRest {
+	return &PlantHandlerRest{
 		resource: resource,
 	}
 }
 
-func (h *StoveHandlerRest) MakeRoutes() {
+func (h *PlantHandlerRest) MakeRoutes() {
 
-	h.ConfigError(constant.HDR_STOVE, h.resource.Herror)
+	h.ConfigError(constant.HDR_PLANT, h.resource.Herror)
 
-	router := h.resource.DefaultRouter("/stoves", true)
+	router := h.resource.DefaultRouter("/plants", true)
 	router.Handle("", h.getAll()).Methods(http.MethodGet)
 	router.Handle("", h.create()).Methods(http.MethodPost)
 	router.Handle("/{id:[0-9]+}", h.get()).Methods(http.MethodGet)
@@ -36,22 +36,22 @@ func (h *StoveHandlerRest) MakeRoutes() {
 	router.Handle("/grid", h.grid()).Methods(http.MethodPost)
 }
 
-func (h *StoveHandlerRest) get() http.HandlerFunc {
+func (h *PlantHandlerRest) get() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		var err error
-		var stoveDtoIn *dto.StoveDtoIn
-		var stoveDtoOut *dto.StoveDtoOut
+		var plantDtoIn *dto.PlantDtoIn
+		var plantDtoOut *dto.PlantDtoOut
 
-		stoveDtoIn = dto.NewStoveDtoIn()
-		h.resource.Restful.BindDataReq(w, r, &stoveDtoIn)
-		stoveDtoOut, err = service.NewStoveService(h.resource.Provider(r)).Get(stoveDtoIn)
+		plantDtoIn = dto.NewPlantDtoIn()
+		h.resource.Restful.BindDataReq(w, r, &plantDtoIn)
+		plantDtoOut, err = service.NewPlantService(h.resource.Provider(r)).Get(plantDtoIn)
 
 		if err != nil {
 			codeErr, _ := strconv.Atoi(err.Error())
-			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_NOT_FOUND, h.Lerr(constant.HDR_EPT_STOVE_GET, codeErr))
+			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_NOT_FOUND, h.Lerr(constant.HDR_EPT_PLANT_GET, codeErr))
 		} else {
-			err = h.resource.Restful.ResponseData(w, r, resource.HTTP_OK, stoveDtoOut)
+			err = h.resource.Restful.ResponseData(w, r, resource.HTTP_OK, plantDtoOut)
 		}
 
 		if err != nil {
@@ -60,34 +60,34 @@ func (h *StoveHandlerRest) get() http.HandlerFunc {
 	})
 }
 
-func (h *StoveHandlerRest) getAll() http.HandlerFunc {
+func (h *PlantHandlerRest) getAll() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		stoves := service.NewStoveService(h.resource.Provider(r)).GetAll()
-		h.resource.Restful.ResponseData(w, r, resource.HTTP_OK, stoves)
+		plants := service.NewPlantService(h.resource.Provider(r)).GetAll()
+		h.resource.Restful.ResponseData(w, r, resource.HTTP_OK, plants)
 	})
 }
 
-func (h *StoveHandlerRest) create() http.HandlerFunc {
+func (h *PlantHandlerRest) create() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		var err error
 
-		stoveDtoIn := dto.NewStoveDtoIn()
-		err = h.resource.Restful.BindDataReq(w, r, &stoveDtoIn)
+		plantDtoIn := dto.NewPlantDtoIn()
+		err = h.resource.Restful.BindDataReq(w, r, &plantDtoIn)
 
 		if err != nil {
 			codeErr, _ := strconv.Atoi(err.Error())
-			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_NOT_FOUND, h.Lerr(constant.HDR_EPT_STOVE_CREATE, codeErr))
+			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_NOT_FOUND, h.Lerr(constant.HDR_EPT_PLANT_CREATE, codeErr))
 		} else {
 			transaction := adapter_shared.BeginTrans(h.resource.Provider(r), audit.Insert)
 
-			err = service.NewStoveService(h.resource.Provider(r)).WithTransaction(transaction).Save(stoveDtoIn)
+			err = service.NewPlantService(h.resource.Provider(r)).WithTransaction(transaction).Save(plantDtoIn)
 
 			if err != nil {
 				transaction.Rollback(err)
 				codeErr, _ := strconv.Atoi(err.Error())
-				err = h.resource.Restful.ResponseError(w, r, resource.HTTP_BAD_REQUEST, h.Lerr(constant.HDR_EPT_STOVE_CREATE, codeErr))
+				err = h.resource.Restful.ResponseError(w, r, resource.HTTP_BAD_REQUEST, h.Lerr(constant.HDR_EPT_PLANT_CREATE, codeErr))
 			} else {
 				transaction.Commit()
 				err = h.resource.Restful.Response(w, r, resource.HTTP_OK)
@@ -99,21 +99,21 @@ func (h *StoveHandlerRest) create() http.HandlerFunc {
 	})
 }
 
-func (h *StoveHandlerRest) save() http.HandlerFunc {
+func (h *PlantHandlerRest) save() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		var err error
 
-		StoveDtoIn := dto.NewStoveDtoIn()
-		h.resource.Restful.BindDataReq(w, r, &StoveDtoIn)
+		PlantDtoIn := dto.NewPlantDtoIn()
+		h.resource.Restful.BindDataReq(w, r, &PlantDtoIn)
 		transaction := adapter_shared.BeginTrans(h.resource.Provider(r), audit.Update)
 
-		err = service.NewStoveService(h.resource.Provider(r)).WithTransaction(transaction).Save(StoveDtoIn)
+		err = service.NewPlantService(h.resource.Provider(r)).WithTransaction(transaction).Save(PlantDtoIn)
 
 		if err != nil {
 			transaction.Rollback(err)
 			codeErr, _ := strconv.Atoi(err.Error())
-			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_BAD_REQUEST, h.Lerr(constant.HDR_EPT_STOVE_SAVE, codeErr))
+			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_BAD_REQUEST, h.Lerr(constant.HDR_EPT_PLANT_SAVE, codeErr))
 		} else {
 			transaction.Commit()
 			err = h.resource.Restful.Response(w, r, resource.HTTP_OK)
@@ -125,18 +125,18 @@ func (h *StoveHandlerRest) save() http.HandlerFunc {
 	})
 }
 
-func (h *StoveHandlerRest) remove() http.HandlerFunc {
+func (h *PlantHandlerRest) remove() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		var err error
 
-		StoveDtoIn := dto.NewStoveDtoIn()
-		h.resource.Restful.BindDataReq(w, r, &StoveDtoIn)
-		err = service.NewStoveService(h.resource.Provider(r)).Remove(StoveDtoIn)
+		PlantDtoIn := dto.NewPlantDtoIn()
+		h.resource.Restful.BindDataReq(w, r, &PlantDtoIn)
+		err = service.NewPlantService(h.resource.Provider(r)).Remove(PlantDtoIn)
 
 		if err != nil {
 			codeErr, _ := strconv.Atoi(err.Error())
-			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_NOT_FOUND, h.Lerr(constant.HDR_EPT_STOVE_REMOVE, codeErr))
+			err = h.resource.Restful.ResponseError(w, r, resource.HTTP_NOT_FOUND, h.Lerr(constant.HDR_EPT_PLANT_REMOVE, codeErr))
 		} else {
 			err = h.resource.Restful.Response(w, r, resource.HTTP_OK)
 		}
@@ -147,17 +147,17 @@ func (h *StoveHandlerRest) remove() http.HandlerFunc {
 	})
 }
 
-func (h *StoveHandlerRest) grid() http.HandlerFunc {
+func (h *PlantHandlerRest) grid() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		GridConfig := grid.NewGridConfig()
 		h.resource.Restful.BindDataReq(w, r, &GridConfig)
 		GridConfig = h.GridConfigData(GridConfig)
-		dataGrid, err := service.NewStoveService(h.resource.Provider(r)).Grid(GridConfig)
+		dataGrid, err := service.NewPlantService(h.resource.Provider(r)).Grid(GridConfig)
 
 		if err != nil {
 			codeErr, _ := strconv.Atoi(err.Error())
-			h.resource.Restful.ResponseError(w, r, resource.HTTP_BAD_REQUEST, h.Lerr(constant.HDR_EPT_STOVE_GRID, codeErr))
+			h.resource.Restful.ResponseError(w, r, resource.HTTP_BAD_REQUEST, h.Lerr(constant.HDR_EPT_PLANT_GRID, codeErr))
 		} else {
 			if GridConfig.Export != nil && len(GridConfig.Export.Value) > 0 {
 				grid.ResponseDataGrid(w, GridConfig.Export.Type, dataGrid, "product")

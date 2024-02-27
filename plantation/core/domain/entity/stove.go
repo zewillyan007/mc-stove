@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"mc-stove/plantation/core/err"
 	"time"
 )
 
@@ -35,5 +36,17 @@ func (ent *Stove) SetId(id int64) {
 }
 
 func (ent *Stove) IsValid() error {
+	if ent.Length == 0 {
+		return err.StoveErrorLength
+	}
+	if ent.Width == 0 {
+		return err.StoveErrorWidth
+	}
+	if ent.Height == 0 {
+		return err.StoveErrorHeight
+	}
+	if ent.Number == 0 {
+		return err.StoveErrorNumber
+	}
 	return nil
 }

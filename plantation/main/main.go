@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	svcName    = "mc-stove-network"
+	svcName    = "mc-stove"
 	svcVersion = "0.0.3"
 )
 
@@ -43,6 +43,7 @@ func main() {
 
 	//Register Handlers
 	sr.AddHandler(adapter.NewStoveHandlerRest(sr))
+	sr.AddHandler(adapter.NewPlantHandlerRest(sr))
 
 	sr.Run(ctx)
 }

@@ -15,6 +15,10 @@ func NewStoveUseCaseSave(repository port.StoveIRepository) *StoveUseCaseSave {
 
 func (o *StoveUseCaseSave) Execute(Stove *entity.Stove) (*entity.Stove, error) {
 
+	if err := Stove.IsValid(); err != nil {
+		return nil, err
+	}
+
 	if i, err := o.repository.Save(Stove); err == nil && i != nil {
 		return i.(*entity.Stove), err
 	} else {
