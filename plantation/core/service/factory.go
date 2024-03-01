@@ -9,3 +9,7 @@ func FactoryStove() *entity.Stove {
 func FactoryPlant() *entity.Plant {
 	return entity.NewPlant()
 }
+
+func FactoryTypeMicrocontroller() *entity.TypeMicrocontroller {
+	return entity.NewTypeMicrocontroller()
+}
