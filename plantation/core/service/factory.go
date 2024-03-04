@@ -13,3 +13,7 @@ func FactoryPlant() *entity.Plant {
 func FactoryMicrocontroller() *entity.Microcontroller {
 	return entity.NewMicrocontroller()
 }
+
+func FactoryTypeMicrocontroller() *entity.TypeMicrocontroller {
+	return entity.NewTypeMicrocontroller()
+}

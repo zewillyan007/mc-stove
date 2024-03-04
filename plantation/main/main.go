@@ -10,7 +10,7 @@ import (
 
 const (
 	svcName    = "mc-stove"
-	svcVersion = "0.0.3"
+	svcVersion = "0.0.4"
 )
 
 // func ConfigCheckAccess(sr *resource.ServerResource) port.ICheckAccessService {
@@ -45,6 +45,7 @@ func main() {
 	sr.AddHandler(adapter.NewStoveHandlerRest(sr))
 	sr.AddHandler(adapter.NewPlantHandlerRest(sr))
 	sr.AddHandler(adapter.NewMicrocontrollerHandlerRest(sr))
+	sr.AddHandler(adapter.NewTypeMicrocontrollerHandlerRest(sr))
 
 	sr.Run(ctx)
 }
