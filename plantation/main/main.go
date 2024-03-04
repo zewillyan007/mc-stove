@@ -44,6 +44,7 @@ func main() {
 	//Register Handlers
 	sr.AddHandler(adapter.NewStoveHandlerRest(sr))
 	sr.AddHandler(adapter.NewPlantHandlerRest(sr))
+	sr.AddHandler(adapter.NewMicrocontrollerHandlerRest(sr))
 
 	sr.Run(ctx)
 }
