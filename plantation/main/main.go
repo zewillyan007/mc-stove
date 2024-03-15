@@ -10,7 +10,7 @@ import (
 
 const (
 	svcName    = "mc-stove"
-	svcVersion = "0.0.4"
+	svcVersion = "1.0.0"
 )
 
 // func ConfigCheckAccess(sr *resource.ServerResource) port.ICheckAccessService {
