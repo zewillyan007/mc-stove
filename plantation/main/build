@@ -1,5 +1,5 @@
 #!/bin/bash
-svcname=manager-network
+svcname=mc-stove
 source=main.go
 
 v=`grep -E '(svcVersion\s*=\s*)"' $source`; v=${v//=/ }; v=${v//\"/}; v=($v); v=${v[1]}
