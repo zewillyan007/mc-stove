@@ -46,6 +46,7 @@ func main() {
 	sr.AddHandler(adapter.NewPlantHandlerRest(sr))
 	sr.AddHandler(adapter.NewMicrocontrollerHandlerRest(sr))
 	sr.AddHandler(adapter.NewTypeMicrocontrollerHandlerRest(sr))
+	sr.AddHandler(adapter.NewCurrentParamsHandlerRest(sr))
 
 	sr.Run(ctx)
 }

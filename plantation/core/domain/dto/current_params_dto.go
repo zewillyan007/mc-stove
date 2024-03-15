@@ -19,21 +19,21 @@ func NewCurrentParamsDtoIn() *CurrentParamsDtoIn {
 	}
 }
 
-// type CurrentParamsDtoOut struct {
-// 	Id                int64
-// 	MicroSerialNumber string
-// 	Temperature       float64
-// 	Moisture          float64
-// 	CreationDateTime  string
-// }
+type CurrentParamsDtoOut struct {
+	Id                int64
+	MicroSerialNumber string
+	Temperature       float64
+	Moisture          float64
+	CreationDateTime  string
+}
 
-// func NewCurrentParamsDtoOut() *CurrentParamsDtoOut {
+func NewCurrentParamsDtoOut() *CurrentParamsDtoOut {
 
-// 	return &CurrentParamsDtoOut{
-// 		Id:                0,
-// 		MicroSerialNumber: "",
-// 		Temperature:       0,
-// 		Moisture:          0,
-// 		CreationDateTime:  "",
-// 	}
-// }
+	return &CurrentParamsDtoOut{
+		Id:                0,
+		MicroSerialNumber: "",
+		Temperature:       0,
+		Moisture:          0,
+		CreationDateTime:  "",
+	}
+}
